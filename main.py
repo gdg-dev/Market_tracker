@@ -1,6 +1,6 @@
 
-from market_fetcher import historical_data, mean_20d, bollinger, mean_5d
-from graphics import historical_graphic, complete_graphic
+from market_fetcher import historical_data, mean_20d, bollinger, mean_5d, standard, info
+from graphics import historical_graphic, complete_graphic, standard_graphic
 import matplotlib.pyplot as plt
 
 
@@ -38,6 +38,29 @@ def ask_interval() -> str:
         else:
             print(f"Error the interval you have chosen is incorrect .Try again...\nIntervals available - {intervals}\n")
            
+def verify_ticker(ticker: str) -> str:
+        if ticker == None:
+            print("\nError you did not chose a ticker .Please do.\n")
+            ticker = ask_ticker()
+            print(f"\nTicker: {ticker} accepted.\n")
+
+        return ticker
+
+def verify_time(time: str) -> str:
+    if time == None:
+        print("\nError you did not chose a time .Please do\n")
+        time = ask_time()
+        print(f"\nTime: {time} accepted.\n")
+
+    return time
+
+def verify_interval(interval: str) -> str:
+    if interval == None:
+        print("\nError you did not chose a interval .Please do\n")
+        interval = ask_interval()
+        print(f"\nInterval: {interval} accepted.")
+
+    return interval
 
 def show_ticker_time_interval(ticker:str, time:str, interval:str):
     print(f"""\n
@@ -57,6 +80,9 @@ def menu():
     print("3- Chose a period")
     print("4- Historical Data")
     print("D- show ticker, time and interval")
+    print("S- standard graphic")
+    print("I- info")
+    print("0- Exit")
 
 def main():
     ticker = None
@@ -80,37 +106,57 @@ def main():
         elif choice == "4":
             print("\n----Historical Data----\n")
 
-            if ticker == None:
-                print("\nError you did not chose a ticker .Please do.\n")
-                ticker = ask_ticker()
-                print(f"\nTicker: {ticker} accepted.\n")
+            ticker = verify_ticker(ticker)
+            time = verify_time(time)
+            interval = verify_interval(interval)
+
             
-            if time == None:
-                print("\nError you did not chose a time .Please do\n")
-                time = ask_time()
-                print(f"\nTime: {time} accepted.\n")
-
-            if interval == None:
-                print("\nError you did not chose a interval .Please do\n")
-                interval = ask_interval()
-                print(f"\nInterval: {interval} accepted.")
-
-
             historical = historical_data(ticker, time, interval)
             historical = mean_20d(historical)
+         
             historical = mean_5d(historical)
             historical = bollinger(historical)
-            print(historical)
-
+            
             complete_graphic(historical, ticker)
 
             
+        elif choice == "S":
+            print("\n----Standard Data----\n")
+           
+            ticker = verify_ticker(ticker)
+            time = verify_time(time)
+            interval = verify_interval(interval)
 
+            df = historical_data(ticker, time, interval)
+            df, golden_cross, death_cross = standard(df)
+            print(f"Golden: {golden_cross}")
+            print(f"Death: {death_cross}")
+            standard_graphic(df)
 
+        elif choice == "I":
+            information = info(ticker)
+            print(information)
 
+        elif choice == '0':
+            print("Exiting...")
+            break
 
 
 
 if __name__ == "__main__":
     main()
+
+def __repr__():
+
+    ticker = "RGTI"
+    time = "2y"
+    interval = "1d"
+
+    #df = historical_data(ticker, time, interval)
+    information = info(ticker)
+    print(information)
+
+
+#__repr__()
+
 

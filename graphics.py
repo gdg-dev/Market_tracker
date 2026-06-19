@@ -42,9 +42,22 @@ def complete_graphic(historical , tricker ):
 
 
 
+def standard_graphic(df):
+
+    if 'sma_50d' != None and  'sma_200' != None:
+
+        df['sma_50d'].plot()
+        df['sma_200d'].plot()
+        df['Close'].plot()
 
 
+        plt.tight_layout()
+        plt.legend()
+        plt.grid()
+        plt.show()
 
+    else:
+        print("No enough data found")
 
 
 
