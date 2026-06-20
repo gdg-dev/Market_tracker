@@ -1,5 +1,5 @@
 
-from market_fetcher import historical_data, mean_20d, bollinger, mean_5d, standard, info
+from market_fetcher import  historical_data, mean_20d, bollinger, mean_5d, standard, info, ask_ai
 from graphics import historical_graphic, complete_graphic, standard_graphic
 import matplotlib.pyplot as plt
 
@@ -82,6 +82,7 @@ def menu():
     print("D- show ticker, time and interval")
     print("S- standard graphic")
     print("I- info")
+    print("AI- ask ai")
     print("0- Exit")
 
 def main():
@@ -115,11 +116,17 @@ def main():
             historical = mean_20d(historical)
          
             historical = mean_5d(historical)
+            print(historical)
             historical = bollinger(historical)
             
             complete_graphic(historical, ticker)
 
-            
+        elif choice == "D":
+            print(f"Ticker -> {ticker};\nTime -> {time};\nInterval -> {interval}\n")
+        
+        
+        
+        
         elif choice == "S":
             print("\n----Standard Data----\n")
            
@@ -131,12 +138,25 @@ def main():
             df, golden_cross, death_cross = standard(df)
             print(f"Golden: {golden_cross}")
             print(f"Death: {death_cross}")
+            print(df)
             standard_graphic(df)
 
         elif choice == "I":
             information = info(ticker)
             print(information)
 
+        elif choice == "AI":
+            ticker = verify_ticker(ticker)
+            time = verify_time(time)
+            interval = verify_interval(interval)
+
+            df = historical_data(ticker, time, interval)
+            df = mean_20d(df)
+            df, golden_cross, death_cross = standard(df)
+            df = bollinger(df)
+            print(df)
+
+            ask_ai(df, golden_cross, death_cross)
         elif choice == '0':
             print("Exiting...")
             break
