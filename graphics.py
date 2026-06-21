@@ -43,6 +43,7 @@ def complete_graphic(historical , tricker ):
 
 
 def standard_graphic(df):
+    plt.clf()
 
     if 'sma_50d' != None and  'sma_200' != None:
 

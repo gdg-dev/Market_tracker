@@ -77,10 +77,11 @@ def menu():
     print("\n-----Menu-----\n")
     print("1- Chose a ticker")
     print("2- Chose a time")
-    print("3- Chose a period")
+    print("3- Chose a Interval")
     print("4- Historical Data")
     print("D- show ticker, time and interval")
     print("S- standard graphic")
+    print("H- historical graphic")
     print("I- info")
     print("AI- ask ai")
     print("0- Exit")
@@ -141,7 +142,20 @@ def main():
             print(df)
             standard_graphic(df)
 
+        elif choice == "H":
+            print("\n----Historical Graphic----\n")
+            ticker = verify_ticker(ticker)
+            time = verify_time(time)
+            interval = verify_interval(interval)
+
+            df = historical_data(ticker, time, interval)
+            df = mean_20d(df)
+
+            historical_graphic(df, ticker)
+
+            
         elif choice == "I":
+            ticker = verify_ticker(ticker)
             information = info(ticker)
             print(information)
 

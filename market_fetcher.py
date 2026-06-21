@@ -71,7 +71,7 @@ def info( ticker):
 def ask_ai(df:pd.DataFrame, golden_cross, death_cross):
 
     client = genai.Client(
-        api_key="AIzaSyA3bGk_LuqkCx4gWd_NMTBdk8OCezfcN8w")
+        api_key="YOUR_API_KEY")
 
     response = client.models.generate_content(
         model = "gemini-3.5-flash",
